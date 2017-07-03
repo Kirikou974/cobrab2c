@@ -1,11 +1,5 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var request = require("request");
-var session = require('express-session');
-var authOKTA = require('./authOKTA');
-var authAZURE = require('./authAzure');
-var url = require('url');
-var saml2json = require('saml2json');
 
 var app = express();
 
