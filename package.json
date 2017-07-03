@@ -10,10 +10,8 @@
     "express"
   ],
   "dependencies": {
-    "jade": "*",
     "express": "^4.13.2"
   },
-  "noAnalyze": true,
   "license": "Apache",
   "engines": {
     "node":"6.10.0",
