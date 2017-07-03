@@ -1,10 +1,9 @@
 var express = require('express');
-var bodyParser = require('body-parser');
 
 var app = express();
 
 var port = process.env.port || process.env.PORT || 8080;
-app.get('/azure', function(req, res) {
+app.get('/', function(req, res) {
     var clientID = 'aa69bc8f-93d6-45c9-848f-ea3d9efa5c06';
     var authority = 'https://login.microsoftonline.com/tfp/testsdxb2c.onmicrosoft.com/B2C_1_SodexoB2CAPPPolicy';
     var b2cScopes = 'https://testsdxb2c.onmicrosoft.com/sodexob2capp/TestB2C';
