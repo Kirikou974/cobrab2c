@@ -1,0 +1,22 @@
+{
+  "name": "azure-b2c-app",
+  "version": "0.0.1",
+  "author": "thierrybigot@one-share.fr",
+  "description": "Azure B2C POC",
+  "main": "./server.js",
+  "keywords": [
+    "azure",
+    "b2c",
+    "express"
+  ],
+  "dependencies": {
+    "jade": "*",
+    "express": "^4.13.2"
+  },
+  "noAnalyze": true,
+  "license": "Apache",
+  "engines": {
+    "node":"6.10.0",
+    "npm":"3.10.10"
+  }
+}
