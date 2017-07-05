@@ -7,7 +7,7 @@
     "npm": "3.10.10"
   },
   "scripts": {
-    "dev": "webpack -d && nodemon server.js"
+    "dev": "webpack -d"
   },
   "dependencies": {
     "babel-core": "^6.25.0",
