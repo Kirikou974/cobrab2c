@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
   /*var html = ReactDOMServer.renderToString(
     React.createElement(SignInComponent)
   )*/
-  var html = "<html><body><div id='api'></div></body></html>";
+  var html = "<!DOCTYPE html><html><head><title>My Product Brand Name</title></head><body>Test<div id='api'></div></body></html>";
   res.send(html);
 }).post('/' + signin, function(req, res) {
   res.send('Sign in');
