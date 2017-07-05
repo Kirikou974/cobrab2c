@@ -24,7 +24,7 @@ app.get('/', function(req, res) {
   /*var html = ReactDOMServer.renderToString(
     React.createElement(SignInComponent)
   )*/
-  var html = "<div id='app'></div>";
+  var html = "<html><body><div id='app'></div></body></html>";
   res.send(html);
 }).post('/' + signin, function(req, res) {
   res.send('Sign in');
