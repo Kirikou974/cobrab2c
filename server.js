@@ -6,9 +6,11 @@ var express = require('express');
 var request = require('request');
 var morgan = require('morgan')
 var React = require('react');
+var cors = require('cors');
 var ReactDOMServer = require('react-dom/server');
 var SignInComponent = require('./containers/signin.jsx');
 var config = require('./config');
+
 
 var app = express();
 var signin = 'signin';
@@ -17,7 +19,7 @@ var verifyCobraCode = 'verifyCobraCode';
 
 app.use(morgan('tiny'));
 app.use(express.static(__dirname + '/public'));
-
+app.use(cors());
 app.get('/', function(req, res) {
   res.redirect('/' + signin);
 }).get('/' + signin + '.html',function(req, res) {
