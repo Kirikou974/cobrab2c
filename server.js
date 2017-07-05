@@ -21,9 +21,10 @@ app.use(express.static(__dirname + '/public'));
 app.get('/', function(req, res) {
   res.redirect('/' + signin);
 }).get('/' + signin,function(req, res) {
-  var html = ReactDOMServer.renderToString(
+  /*var html = ReactDOMServer.renderToString(
     React.createElement(SignInComponent)
-  )
+  )*/
+  var html = "<div id='app'></div>";
   res.send(html);
 }).post('/' + signin, function(req, res) {
   res.send('Sign in');
