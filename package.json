@@ -10,9 +10,15 @@
     "dev": "webpack -d && nodemon server.js"
   },
   "dependencies": {
-    "cors": "^2.8.3",
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-register": "^6.24.1",
     "express": "^4.13.2",
     "morgan": "^1.8.2",
-    "request": "^2.81.0"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "request": "^2.81.0",
+    "webpack": "^3.0.0"
   }
 }
