@@ -9,15 +9,10 @@
     "dev": "webpack -d && nodemon server.js"
   },
   "dependencies": {
-    "babel-preset-react": "^6.24.1",
-    "babel-register": "^6.24.1",
     "express": "^4.13.2",
     "morgan": "^1.8.2",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
     "request": "^2.81.0"
   },
-  "devDependencies": {
-    "babel-loader": "^7.1.1"
-  }
 }
