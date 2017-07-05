@@ -1,0 +1,39 @@
+<script src="/signup.js"></script>
+<script type='text/babel'>
+    var signup2 = React.createClass({
+        render: function() {
+            return (
+                fetch('/verifyCobraCode').then(function(response) {
+                    return response.json()
+                })
+                fetch('https://mywebsite.com/endpoint/', {  
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        firstParam: 'yourValue',
+                        secondParam: 'yourOtherValue',
+                    })
+                ).then(function(response)
+                    {
+                            
+                    });
+                })
+            )
+        }
+    })
+    function verifyCobraCode() {
+        console.log('ok');
+        ReactDOM.render(<signup2 />, document.querySelector('#app'))
+    }
+</script>
+<form action="{{formAction}}" method="post">
+    {{> signup1 }}
+    <div id='app'></div>
+</form>
+<hr>
+<p>You have an account? <a href="/">Sign in</a></p>
+
+
