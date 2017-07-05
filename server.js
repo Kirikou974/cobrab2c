@@ -20,7 +20,7 @@ app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(req, res) {
   res.redirect('/' + signin);
-}).get('/' + signin,function(req, res) {
+}).get('/' + signin + '.html',function(req, res) {
   /*var html = ReactDOMServer.renderToString(
     React.createElement(SignInComponent)
   )*/
