@@ -1,14 +1,6 @@
 var React = require('react');
-var Router = require('react-router');
-var Route = Router.Route;
-var Redirect = Router.Redirect;
-var RouteHandler = Router.RouteHandler;
-var NotFoundRoute = Router.NotFoundRoute;
-
 
 module.exports = class SuccessScreen extends React.Component{
-  mixins = [ Router.State, Router.Navigation ];
-
   render() {
     return (
       <div className="success_screen">
@@ -22,7 +14,5 @@ module.exports = class SuccessScreen extends React.Component{
       </div>
     );
   }
-    
 };
     
-module.exports = SuccessScreen;
