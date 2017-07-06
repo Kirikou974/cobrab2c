@@ -1,6 +1,7 @@
 var path = require('path');
+var webpack = require('webpack');
 module.exports = {
-    entry:['./containers/signin.jsx'],
+    entry:['./client.js'],
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname + '/public')
@@ -20,5 +21,12 @@ module.exports = {
     },
     performance: {
         hints: false
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+        'process.env': {
+            'NODE_ENV': '"production"'
+        }
+        })
+    ]
 }
