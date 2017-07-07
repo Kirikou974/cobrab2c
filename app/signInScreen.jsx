@@ -9,18 +9,43 @@ module.exports = class SignInScreen extends React.Component{
     this.state = {
       email: '',
       password: '',
-      accountCreated:this.props.accountCreated
+      accountCreated:this.props.accountCreated,
+      loading:false
     }
+    this.handlePasswordInput = this.handlePasswordInput.bind(this);
     this.saveAndContinue = this.saveAndContinue.bind(this);
+    this.handleEmailInput = this.handleEmailInput.bind(this);
+
   }
 
   isEmpty(value) {
     return !_.isEmpty(value);
   }
-
+  handleEmailInput(event){
+    this.setState({
+      email: event.target.value
+    });
+  }
+  handlePasswordInput(event) {
+    this.setState({
+      password: event.target.value
+    });
+  }
   saveAndContinue(e) {
     e.preventDefault();
-    alert('Thanks.');
+    this.setState({
+      loading:true,
+      accountCreated:false
+    })
+    this.props.signInAccount({
+      email: this.state.email,
+      password: this.state.password
+    }, this.signInCallback);
+  }
+  signInCallback(data){
+    this.setState({
+      loading:false
+    })
   }
 
   render() {
@@ -45,9 +70,11 @@ module.exports = class SignInScreen extends React.Component{
               validate={this.isEmpty}
               defaultValue={this.state.email} 
               value={this.state.email}
+              onChange={this.handleEmailInput} 
               errorMessage="Email is invalid"
               emptyMessage="Email can't be empty"
               errorVisible={this.state.showEmailError}
+              hideValidationIcons={true}
             />
             <Input 
               text="Password" 
@@ -55,7 +82,9 @@ module.exports = class SignInScreen extends React.Component{
               ref="password"
               validate={this.isEmpty}
               value={this.state.passsword}
+              onChange={this.handlePasswordInput} 
               emptyMessage="Password can't be empty"
+              hideValidationIcons={true}
             /> 
             {this.props.children}
           </form>

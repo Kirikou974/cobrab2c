@@ -38,6 +38,7 @@ module.exports = class Input extends React.Component {
       requireNumbers: this.props.requireNumbers,
       errorVisible: false,
       forbiddenWords: this.props.forbiddenWords,
+      hideValidationIcons: this.props.hideValidationIcons,
       isValidatorValid: {
         minChars: false,
         capitalLetters: false,
@@ -200,6 +201,11 @@ module.exports = class Input extends React.Component {
       'input_unfocused': !this.state.focus
     });
     var validator;
+    var validationIcons = this.state.hideValidationIcons == false ? React.createElement(        
+        <div className="validationIcons">
+          <i className="input_error_icon" onMouseEnter={this.mouseEnterError}> <Icon type="circle_error"/> </i>
+          <i className="input_valid_icon"> <Icon type="circle_tick"/> </i>
+        </div>) : null;
 
     if(this.state.validator) {
       validator = 
@@ -242,10 +248,7 @@ module.exports = class Input extends React.Component {
           visible={this.state.errorVisible} 
           errorMessage={this.state.errorMessage} 
         />
-        <div className="validationIcons">
-          <i className="input_error_icon" onMouseEnter={this.mouseEnterError}> <Icon type="circle_error"/> </i>
-          <i className="input_valid_icon"> <Icon type="circle_tick"/> </i>
-        </div>
+        {validationIcons}
 
         {validator}
 

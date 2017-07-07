@@ -25,7 +25,7 @@ app.post('/api/verifyCode', function(req, res){
   res.json({ codeIsValid: returnValue }).status(200); 
 })
 
-//Appel azure
+//Appel azure création user
 app.post('/api/createuser', function(req, res){
   var getTokenOptions = getRequestTokenOptions();
   var data = req.body.data;
@@ -73,18 +73,24 @@ app.post('/api/createuser', function(req, res){
   //res.json({accountCreated: true}).status(200);
 })
 
-app.get('/testapi', function(req, res){
-  var options = { method: 'POST',
-    url: 'http://localhost:8080/api/createuser'
-  };
-  
-  request(options, function (error, response, body) {
+//Appel azure sign in user
+app.post('/api/signin', function(req, res){
+  var data = req.body.data;
+
+  var userData = {
+    userName:data.email,
+    password:data.password
+  }
+  var options = getRequestTokenForUserOptions(userData);
+  request(options, function(error, response, body){
     if (error) throw new Error(error);
-    res.status(200).send('Result :<br/>' + body);
+    console.log(body);
+    res.json({test:true}).status(200);
   });
+      
 })
 
-function getRequestTokenOptions(){
+function getRequestTokenOptions(userData){
     //console.log(req.body.data);
   var getTokenURL = sprintf(
     'https://login.microsoftonline.com/%s.onmicrosoft.com/oauth2/token', 
@@ -103,6 +109,34 @@ function getRequestTokenOptions(){
       grant_type: 'client_credentials',
       client_id: config.ApplicationID,
       'client_secret\n': config.ApplicationSecret
+    } 
+  };
+  return options;
+}
+
+function getRequestTokenForUserOptions(userData){
+    //console.log(req.body.data);
+  var getTokenURL = sprintf(
+    'https://login.microsoftonline.com/%s.onmicrosoft.com/oauth2/token', 
+    config.Tenant
+  )
+  var options = { method: 'POST',
+    url: getTokenURL,
+    headers: 
+    { 
+      'cache-control': 'no-cache',
+      'content-type': 'application/x-www-form-urlencoded'
+    },
+    json: true,
+    form: 
+    { 
+      grant_type: 'password',
+      scope:'openid',
+      resource:"https://cobrab2c.azurewebsites.net",
+      client_id: config.ApplicationID,
+      'client_secret\n': config.ApplicationSecret,
+      username: userData.userName,
+      password: userData.password
     } 
   };
   return options;

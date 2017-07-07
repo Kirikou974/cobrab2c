@@ -17,6 +17,7 @@ module.exports = class MainApp extends React.Component {
         this.handleSignUpLinkClick = this.handleSignUpLinkClick.bind(this);
         this.handleSignInLinkClick = this.handleSignInLinkClick.bind(this);  
         this.createAccount = this.createAccount.bind(this);  
+        this.signInAccount = this.signInAccount.bind(this);
     }
 
     handleSignInLinkClick() {
@@ -24,6 +25,30 @@ module.exports = class MainApp extends React.Component {
     }
     handleSignUpLinkClick() {
         this.setState({signIn: false});
+    }
+
+    signInAccount(data, callback){
+        this.setState({
+            loading:true,
+            accountCreated:false
+        })
+        fetch('/api/signin', {
+        method: 'POST',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            data
+        })
+        }).then(res => {
+            res.json().then(jsonResponse=>{ 
+                console.log(jsonResponse);
+                this.setState({
+                    loading: false
+                })
+            })
+        });
     }
       
     createAccount(data, callback){
@@ -69,7 +94,7 @@ module.exports = class MainApp extends React.Component {
         var customFormButton = React.createElement(customButton, 
         {
             buttonText: this.state.signIn ?  'SIGN IN':'CREATE AN ACCOUNT', 
-            handleClick: null
+            loading: this.state.loading
         });
         var customFormLink = React.createElement(customLink, 
         {
@@ -89,7 +114,8 @@ module.exports = class MainApp extends React.Component {
         });
 
         var signInForm = React.createElement(SignInScreen, { 
-            accountCreated:this.state.accountCreated
+            accountCreated:this.state.accountCreated,
+            signInAccount: this.signInAccount
         }, customFormButton, customFormLink);
 
         var signUpForm = React.createElement(SignUpScreen, { 
