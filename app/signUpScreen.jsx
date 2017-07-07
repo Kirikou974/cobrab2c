@@ -3,7 +3,7 @@ var ReactDOM = require('react-dom');
 var _ = require('underscore');
 var Input = require('./components/Input.jsx');
 var InputError = require('./components/InputError.jsx');
-var FormError = require('./components/FormError.jsx');
+var FormMessage = require('./components/FormMessage.jsx');
 var customButton = require('./components/customButton.jsx')
 
 module.exports = class signUpScreen extends React.Component {
@@ -93,7 +93,8 @@ module.exports = class signUpScreen extends React.Component {
   errorAccountCallback()
   {
     this.setState({
-      formError:true
+      formError:true,
+      loading:false
     })
   }
 
@@ -184,13 +185,6 @@ module.exports = class signUpScreen extends React.Component {
         handleClick: this.handleCobraCheckButtonClick
       });
     }
-    
-    errorFormDiv = React.createElement(FormError,{
-      visible:this.props.formError,
-      //TODO change message
-      errorMessage:"Cannot create account. Reason : blablablablablablabla"
-    })
-    
     const createAccountButton = this.state.cobraCodeVerified ? this.props.createAccountButton : null;
     
     return (
@@ -209,7 +203,7 @@ module.exports = class signUpScreen extends React.Component {
               onChange={this.handleSSNInput} 
               errorMessage="SSN is invalid"
               emptyMessage="SSN can't be empty"
-              disabled={this.state.cobraCodeVerified}
+              disabled={this.state.cobraCodeVerified || this.state.loading}
             />
             <Input 
               text="Cobra Code" 
@@ -220,7 +214,7 @@ module.exports = class signUpScreen extends React.Component {
               onChange={this.handleCobraCodeInput} 
               errorMessage="Cobra code is invalid"
               emptyMessage="Cobra code can't be empty"
-              disabled={this.state.cobraCodeVerified}
+              disabled={this.state.cobraCodeVerified || this.state.loading}
             /> 
             {cobraCheckButton}
             <Input 
@@ -234,6 +228,7 @@ module.exports = class signUpScreen extends React.Component {
               errorMessage="Email is invalid"
               emptyMessage="Email can't be empty"
               errorVisible={this.state.showEmailError}
+              disabled={this.state.loading}
               visible={!this.state.cobraCodeVerified}
             />
             <Input 
@@ -246,6 +241,7 @@ module.exports = class signUpScreen extends React.Component {
               onChange={this.handleFirstNameInput} 
               emptyMessage="First name can't be empty"
               errorVisible={this.state.showFirstNameError}
+              disabled={this.state.loading}
               visible={!this.state.cobraCodeVerified}
             />
             <Input 
@@ -258,6 +254,7 @@ module.exports = class signUpScreen extends React.Component {
               onChange={this.handleLastNameInput} 
               emptyMessage="Last name can't be empty"
               errorVisible={this.state.showLastNameError}
+              disabled={this.state.loading}
               visible={!this.state.cobraCodeVerified}
             />
             <Input 
@@ -272,6 +269,7 @@ module.exports = class signUpScreen extends React.Component {
               value={this.state.passsword}
               emptyMessage="Password is invalid"
               onChange={this.handlePasswordInput} 
+              disabled={this.state.loading}
               visible={!this.state.cobraCodeVerified}
             /> 
             <Input 
@@ -283,9 +281,15 @@ module.exports = class signUpScreen extends React.Component {
               onChange={this.handleConfirmPasswordInput} 
               emptyMessage="Please confirm your password"
               errorMessage="Passwords don't match"
+              disabled={this.state.loading}
               visible={!this.state.cobraCodeVerified}
             /> 
             {errorFormDiv}
+            <FormMessage
+              text={this.props.errorMessage}
+              visible={this.props.formError}
+              type='ERROR'
+            />
             {createAccountButton}
             {this.props.children}
           </form>

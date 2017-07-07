@@ -8,7 +8,8 @@
   },
   "scripts": {
     "dev": "webpack -d --watch & nodemon server.js -e js,jsx",
-    "build": "webpack -d && gulp"
+    "build": "webpack -d && gulp",
+    "start": "nodemon server.js -e js,jsx"
   },
   "dependencies": {
     "babel-core": "^6.25.0",
@@ -29,6 +30,7 @@
     "react-dom": "^15.6.1",
     "react-router": "^3.0.5",
     "request": "^2.81.0",
+    "sprintf-js": "^1.1.1",
     "underscore": "^1.8.3",
     "webpack": "^3.0.0"
   }

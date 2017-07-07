@@ -9,8 +9,10 @@ module.exports = class MainApp extends React.Component {
         super(props)
         this.state = {
             signIn: this.props.signIn,
-            renderForm: true,
-            formError: false
+            accountCreated:false,
+            formError: false,
+            errorMessage:'',
+            loading:false
         }
         this.handleSignUpLinkClick = this.handleSignUpLinkClick.bind(this);
         this.handleSignInLinkClick = this.handleSignInLinkClick.bind(this);  
@@ -25,51 +27,81 @@ module.exports = class MainApp extends React.Component {
     }
       
     createAccount(data, callback){
-        console.log(data);
+        //console.log(data);
         var error = true;
-        if(error){
-            this.setState({
-                formError:true
+        this.setState({
+            loading:true
+        })
+        fetch('/api/createuser', {
+            method:'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                data
             })
-            callback();        
-        }
+        }).then(res => {
+            res.json().then(jsonResponse=>{ 
+                error = !jsonResponse.accountCreated
+                if(error){
+                    this.setState({
+                        loading: false,
+                        formError:true,
+                        errorMessage:"Cannot create account"                       
+                    })       
+                    callback(); 
+                }
+                else {
+                    this.setState({
+                        loading: false,
+                        signIn:true,
+                        accountCreated:true
+                    })
+                }
+            })
+        });
     }
 
     render() {
         var baseComponent = null;
-        if(this.state.renderForm)
-        {
-            var customFormButton = React.createElement(customButton, 
-            {
-                buttonText: this.state.signIn ?  'SIGN IN':'CREATE AN ACCOUNT', 
-                handleClick: null
-            });
-            var customFormLink = React.createElement(customLink, 
-            {
-                description: this.state.signIn ? 'Need an account? ' : 'Already have an account ? ',
-                title:this.state.signIn ? 'Sign up' : 'Sign in',
-                handeClick: this.state.signIn ? this.handleSignUpLinkClick : this.handleSignInLinkClick
-            })
-            var createAccountButton = React.createElement(customButton,
-            {
-                buttonText: 'CREATE ACCOUNT'
-            });
-            var cobraCheckButton = React.createElement(customButton, 
-            {
-                buttonText: 'VERIFY CODE', 
-                type: 'button'
-            });
-            
-            var signInForm = React.createElement(SignInScreen, null, customFormButton, customFormLink);
-            var signUpForm = React.createElement(SignUpScreen, { 
-                createAccountButton: createAccountButton,
-                cobraCheckButton : cobraCheckButton,
-                createAccount:this.createAccount,
-                formError:this.state.formError
-            }, customFormLink);
 
-            baseComponent = this.state.signIn ? signInForm : signUpForm;
-        }
+        var customFormButton = React.createElement(customButton, 
+        {
+            buttonText: this.state.signIn ?  'SIGN IN':'CREATE AN ACCOUNT', 
+            handleClick: null
+        });
+        var customFormLink = React.createElement(customLink, 
+        {
+            description: this.state.signIn ? 'Need an account? ' : 'Already have an account ? ',
+            title:this.state.signIn ? 'Sign up' : 'Sign in',
+            handeClick: this.state.signIn ? this.handleSignUpLinkClick : this.handleSignInLinkClick
+        })
+        var createAccountButton = React.createElement(customButton,
+        {
+            buttonText: 'CREATE ACCOUNT',
+            loading: this.state.loading
+        });
+        var cobraCheckButton = React.createElement(customButton, 
+        {
+            buttonText: 'VERIFY CODE', 
+            type: 'button'
+        });
+
+        var signInForm = React.createElement(SignInScreen, { 
+            accountCreated:this.state.accountCreated
+        }, customFormButton, customFormLink);
+
+        var signUpForm = React.createElement(SignUpScreen, { 
+            createAccountButton: createAccountButton,
+            cobraCheckButton : cobraCheckButton,
+            createAccount:this.createAccount,
+            formError:this.state.formError,
+            errorMessage: this.state.errorMessage,
+            loading: this.state.loading
+        }, customFormLink);
+
+        baseComponent = this.state.signIn ? signInForm : signUpForm;
         return (
             <div>
                 <div className="application_wrapper">

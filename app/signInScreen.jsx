@@ -1,13 +1,15 @@
 var React = require('react');
 var _ = require('underscore');
 var Input = require('./components/Input.jsx');
+var FormMessage = require('./components/FormMessage.jsx');
 
 module.exports = class SignInScreen extends React.Component{
   constructor(props){
     super(props);
     this.state = {
       email: '',
-      password: ''
+      password: '',
+      accountCreated:this.props.accountCreated
     }
     this.saveAndContinue = this.saveAndContinue.bind(this);
   }
@@ -22,11 +24,19 @@ module.exports = class SignInScreen extends React.Component{
   }
 
   render() {
+    
     return (
       <div className="create_account_screen">
         <div className="create_account_form">
+
           <h1>Sign In</h1>
           <p></p>
+          <FormMessage
+            text="Account Created"
+            type="SUCCESS"
+            visible={this.state.accountCreated}>
+            <p></p>
+          </FormMessage>
           <form onSubmit={this.saveAndContinue}>
             <Input 
               text="Email Address" 

@@ -624,6 +624,83 @@ table td {
     transform: translateX(0px);
   }
 }
+.form_success_container {
+  position: relative;
+  opacity: 0;
+  top: 0;
+  left: 0;
+  white-space: nowrap;
+  line-height: 35px;
+  width: auto;
+  height: 35px;
+  background: #50b87f;
+  -webkit-box-sizing: border-box;
+  -khtml-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -ms-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0 20px 0 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 100;
+  letter-spacing: .6px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+@media only screen and (min-width : 0px) and (max-width : 870px) {
+  .form_success_container {
+    position: relative;
+    top: -13px;
+    left: 0;
+    line-height: 30px;
+    font-size: 12px;
+    padding: 0 15px 0 15px;
+    font-weight: 300;
+  }
+}
+.form_success_container.visible {
+  -o-transform: translateX(0px);
+  -webkit-transform: translateX(0px);
+  -moz-transform: translateX(0px);
+  -ms-transform: translateX(0px);
+  transform: translateX(0px);
+  opacity: 1;
+}
+@media only screen and (min-width : 0px) and (max-width : 870px) {
+  .form_success_container.visible {
+    height: 30px;
+  }
+}
+.form_success_container.invisible {
+  -o-transform: translateX(-30px);
+  -webkit-transform: translateX(-30px);
+  -moz-transform: translateX(-30px);
+  -ms-transform: translateX(-30px);
+  transform: translateX(-30px);
+  opacity: 0;
+  -webkit-animation-delay: 2s;
+  /* Chrome, Safari, Opera */
+  animation-delay: 2s;
+}
+@media only screen and (min-width : 0px) and (max-width : 870px) {
+  .form_success_container.invisible {
+    height: 0;
+    line-height: 0;
+    -o-transform: translateX(0px);
+    -webkit-transform: translateX(0px);
+    -moz-transform: translateX(0px);
+    -ms-transform: translateX(0px);
+    transform: translateX(0px);
+  }
+}
 .password_validator {
   top: 0;
   left: 105%;
@@ -1254,6 +1331,21 @@ table td {
   -moz-box-shadow: none;
   box-shadow: none;
   background: #6bc5e6;
+}
+.img_wide {
+  width: 70px;
+  position: relative;
+  display: block;
+  margin: auto;
+}
+div.img_wide {
+  display: block;
+  position: relative;
+  width: 100%;
+  margin: 5px 0 5px 0;
+  height: 50px;
+  font-size: 13px;
+  background: #545a6a;
 }
 html {
   width: 100%;
