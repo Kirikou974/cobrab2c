@@ -1,14 +1,17 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var _ = require('underscore');
 var Input = require('./components/Input.jsx');
 var InputError = require('./components/InputError.jsx');
+var FormError = require('./components/FormError.jsx');
 var customButton = require('./components/customButton.jsx')
 
-module.exports = class CreateAccountScreen extends React.Component {
+module.exports = class signUpScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
       loading:false,
+      formError:this.props.formError,
       email: '',
       cobraCode: '',
       SSN: '',
@@ -32,6 +35,7 @@ module.exports = class CreateAccountScreen extends React.Component {
     this.handleLastNameInput = this.handleLastNameInput.bind(this);
     this.checkCobraCode = this.checkCobraCode.bind(this);
     this.validateCobraCode = this.validateCobraCode.bind(this);
+    this.errorAccountCallback = this.errorAccountCallback.bind(this);
   }
 
   handlePasswordInput(event) {
@@ -56,7 +60,6 @@ module.exports = class CreateAccountScreen extends React.Component {
 
   saveAndContinue(e) {
     e.preventDefault();
-    console.log('saveAndContinue');
     var canProceed = this.validateEmail(this.state.email) 
         && !_.isEmpty(this.state.cobraCode)
         && !_.isEmpty(this.state.SSN)
@@ -76,7 +79,7 @@ module.exports = class CreateAccountScreen extends React.Component {
       this.setState({
         loading:true
       })
-      console.log(data);
+      this.props.createAccount(data, this.errorAccountCallback);
     } else {
       this.refs.email.isValid();
       this.refs.SSN.isValid();
@@ -87,12 +90,15 @@ module.exports = class CreateAccountScreen extends React.Component {
       this.refs.passwordConfirm.isValid();
     }
   }
+  errorAccountCallback()
+  {
+    this.setState({
+      formError:true
+    })
+  }
 
   //Simule un appel vers cobra
   checkCobraCode(e){
-    this.setState({
-      loading:true
-    })
     fetch('/api/verifyCode', {
       method: 'POST',
       headers: {
@@ -105,11 +111,9 @@ module.exports = class CreateAccountScreen extends React.Component {
       })
     }).then(res => {
       res.json().then(jsonResponse=>{ 
-        console.log(jsonResponse);
         this.setState({
           cobraCodeError:!jsonResponse.codeIsValid,
-          cobraCodeVerified: jsonResponse.codeIsValid,
-          loading: false
+          cobraCodeVerified: jsonResponse.codeIsValid
         })
         this.refs.SSN.setValidity(jsonResponse.codeIsValid);
         this.refs.cobraCode.setValidity(jsonResponse.codeIsValid);
@@ -171,22 +175,26 @@ module.exports = class CreateAccountScreen extends React.Component {
   }
 
   render() {
-      var cobraCheckButton = this.state.cobraCodeVerified ? null : React.createElement(customButton, 
-      {
-          buttonText: 'VERIFY CODE', 
-          handleClick: this.handleCobraCheckButtonClick,
-          type: 'button',
-      });
-      var createAccountButton = this.state.cobraCodeVerified ? React.createElement(customButton,
-      {
-          buttonText: 'CREATE ACCOUNT', 
-          handleClick: null,
-          disabled: this.state.loading
-      }) : null;
+    let cobraCheckButton = null;
+    let errorFormDiv = null;
 
+    if(!this.state.cobraCodeVerified) {
+      cobraCheckButton = this.props.cobraCheckButton;
+      cobraCheckButton = React.cloneElement(cobraCheckButton, {
+        handleClick: this.handleCobraCheckButtonClick
+      });
+    }
+    
+    errorFormDiv = React.createElement(FormError,{
+      visible:this.props.formError,
+      //TODO change message
+      errorMessage:"Cannot create account. Reason : blablablablablablabla"
+    })
+    
+    const createAccountButton = this.state.cobraCodeVerified ? this.props.createAccountButton : null;
+    
     return (
       <div className="create_account_screen">
-
         <div className="create_account_form">
           <h1>Sign Up</h1>
           <p></p>
@@ -201,7 +209,7 @@ module.exports = class CreateAccountScreen extends React.Component {
               onChange={this.handleSSNInput} 
               errorMessage="SSN is invalid"
               emptyMessage="SSN can't be empty"
-              disabled={this.state.cobraCodeVerified || this.state.loading}
+              disabled={this.state.cobraCodeVerified}
             />
             <Input 
               text="Cobra Code" 
@@ -226,7 +234,7 @@ module.exports = class CreateAccountScreen extends React.Component {
               errorMessage="Email is invalid"
               emptyMessage="Email can't be empty"
               errorVisible={this.state.showEmailError}
-              disabled={!this.state.cobraCodeVerified || this.state.loading}
+              visible={!this.state.cobraCodeVerified}
             />
             <Input 
               text="First name" 
@@ -238,7 +246,7 @@ module.exports = class CreateAccountScreen extends React.Component {
               onChange={this.handleFirstNameInput} 
               emptyMessage="First name can't be empty"
               errorVisible={this.state.showFirstNameError}
-              disabled={!this.state.cobraCodeVerified || this.state.loading}
+              visible={!this.state.cobraCodeVerified}
             />
             <Input 
               text="Last name" 
@@ -250,7 +258,7 @@ module.exports = class CreateAccountScreen extends React.Component {
               onChange={this.handleLastNameInput} 
               emptyMessage="Last name can't be empty"
               errorVisible={this.state.showLastNameError}
-              disabled={!this.state.cobraCodeVerified || this.state.loading}
+              visible={!this.state.cobraCodeVerified}
             />
             <Input 
               text="Password" 
@@ -264,9 +272,8 @@ module.exports = class CreateAccountScreen extends React.Component {
               value={this.state.passsword}
               emptyMessage="Password is invalid"
               onChange={this.handlePasswordInput} 
-              disabled={!this.state.cobraCodeVerified || this.state.loading}
+              visible={!this.state.cobraCodeVerified}
             /> 
-
             <Input 
               text="Confirm password" 
               ref="passwordConfirm"
@@ -276,8 +283,9 @@ module.exports = class CreateAccountScreen extends React.Component {
               onChange={this.handleConfirmPasswordInput} 
               emptyMessage="Please confirm your password"
               errorMessage="Passwords don't match"
-              disabled={!this.state.cobraCodeVerified || this.state.loading}
+              visible={!this.state.cobraCodeVerified}
             /> 
+            {errorFormDiv}
             {createAccountButton}
             {this.props.children}
           </form>

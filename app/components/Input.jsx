@@ -8,7 +8,6 @@ var PasswordValidator = require('./PasswordValidator.jsx');
 
 var cx = classNames;
 
-
 module.exports = class Input extends React.Component {
 
   constructor(props){
@@ -28,6 +27,7 @@ module.exports = class Input extends React.Component {
       empty: _.isEmpty(this.props.value),
       focus: false,
       value: '',
+      disabled: this.props.disabled,
       iconsVisible: !this.props.validator,
       errorMessage: this.props.emptyMessage,
       validator: this.props.validator,
@@ -72,8 +72,6 @@ module.exports = class Input extends React.Component {
 
   validateInput(value) {
     // trigger custom validation method in the parent component
-      console.log(value);
-    
     if(this.props.validate && this.props.validate(value)){
       this.setState({
         valid: true,
@@ -201,7 +199,6 @@ module.exports = class Input extends React.Component {
       'input_focused':   this.state.focus,
       'input_unfocused': !this.state.focus
     });
-    var disabled = this.state.disabled ? "disabled='disabled'" : '';
     var validator;
 
     if(this.state.validator) {
@@ -219,32 +216,32 @@ module.exports = class Input extends React.Component {
           requireNumbers={this.props.requireNumbers}
         />
     }
-
+    if(this.props.visible)
+    {
+      return null;
+    }
+    var disabled = this.props.disabled ? "disabled='disabled'" : null;
     return (
       <div className={inputGroupClasses}>
-
         <label className="input_label" htmlFor={this.props.text}>
           <span className="label_text">{this.props.text}</span>
         </label>
-
         <input 
-          {...this.props}
           placeholder={this.props.placeholder} 
           className="input" 
           id={this.props.text}
           defaultValue={this.props.defaultValue} 
-          value={this.state.value} 
           onChange={this.handleChange} 
           onFocus={this.handleFocus}
           onBlur={this.handleBlur}
           autoComplete="off"
+          type={this.props.type}
+          disabled={this.props.disabled}
         />
-
         <InputError 
           visible={this.state.errorVisible} 
           errorMessage={this.state.errorMessage} 
         />
-
         <div className="validationIcons">
           <i className="input_error_icon" onMouseEnter={this.mouseEnterError}> <Icon type="circle_error"/> </i>
           <i className="input_valid_icon"> <Icon type="circle_tick"/> </i>

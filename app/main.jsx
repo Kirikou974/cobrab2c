@@ -9,10 +9,12 @@ module.exports = class MainApp extends React.Component {
         super(props)
         this.state = {
             signIn: this.props.signIn,
-            renderForm: this.props.renderForm
+            renderForm: true,
+            formError: false
         }
         this.handleSignUpLinkClick = this.handleSignUpLinkClick.bind(this);
-        this.handleSignInLinkClick = this.handleSignInLinkClick.bind(this);
+        this.handleSignInLinkClick = this.handleSignInLinkClick.bind(this);  
+        this.createAccount = this.createAccount.bind(this);  
     }
 
     handleSignInLinkClick() {
@@ -21,11 +23,20 @@ module.exports = class MainApp extends React.Component {
     handleSignUpLinkClick() {
         this.setState({signIn: false});
     }
+      
+    createAccount(data, callback){
+        console.log(data);
+        var error = true;
+        if(error){
+            this.setState({
+                formError:true
+            })
+            callback();        
+        }
+    }
 
     render() {
-        
         var baseComponent = null;
-        
         if(this.state.renderForm)
         {
             var customFormButton = React.createElement(customButton, 
@@ -39,28 +50,34 @@ module.exports = class MainApp extends React.Component {
                 title:this.state.signIn ? 'Sign up' : 'Sign in',
                 handeClick: this.state.signIn ? this.handleSignUpLinkClick : this.handleSignInLinkClick
             })
-
+            var createAccountButton = React.createElement(customButton,
+            {
+                buttonText: 'CREATE ACCOUNT'
+            });
+            var cobraCheckButton = React.createElement(customButton, 
+            {
+                buttonText: 'VERIFY CODE', 
+                type: 'button'
+            });
+            
             var signInForm = React.createElement(SignInScreen, null, customFormButton, customFormLink);
-            var signUpForm = React.createElement(SignUpScreen, null, customFormLink);
+            var signUpForm = React.createElement(SignUpScreen, { 
+                createAccountButton: createAccountButton,
+                cobraCheckButton : cobraCheckButton,
+                createAccount:this.createAccount,
+                formError:this.state.formError
+            }, customFormLink);
+
             baseComponent = this.state.signIn ? signInForm : signUpForm;
         }
-        
         return (
-            <html>
-                <head>
-                    <link rel="stylesheet"  href='/application.css'/>
-                </head>
-                <body>
-                    <div className="application_wrapper">
-                        <div className="application_routeHandler">
-                            <div id='app'>
-                                {baseComponent}
-                            </div>
-                        </div>
+            <div>
+                <div className="application_wrapper">
+                    <div className="application_routeHandler">
+                        {baseComponent}
                     </div>
-                    <script src='/bundle.js'/>
-                </body>
-            </html>
+                </div>
+            </div>
         );
     }
 }
