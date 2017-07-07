@@ -25,7 +25,7 @@ module.exports = class SignInScreen extends React.Component{
     return (
       <div className="create_account_screen">
         <div className="create_account_form">
-          <h1>Sign In with Azure B2C account</h1>
+          <h1>Sign In</h1>
           <p></p>
           <form onSubmit={this.saveAndContinue}>
             <Input 
@@ -45,7 +45,7 @@ module.exports = class SignInScreen extends React.Component{
               ref="password"
               validate={this.isEmpty}
               value={this.state.passsword}
-              emptyMessage="Password is invalid"
+              emptyMessage="Password can't be empty"
             /> 
             {this.props.children}
           </form>

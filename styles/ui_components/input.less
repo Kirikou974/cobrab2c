@@ -5,7 +5,7 @@
   .display(relative);
   width: 100%;
   min-height: 70px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 
   @media @mobile {
     min-height: @input-height-mobile;
@@ -65,7 +65,9 @@
       color: #b1b0b1;
     }
   }
-
+  input:disabled {
+      background: #dddddd;
+  }
   input.input {
     .display(relative);
     .box-shadow(none);

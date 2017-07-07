@@ -2,22 +2,24 @@ var React = require('react');
 var SignInScreen = require('./signInScreen.jsx');
 var SignUpScreen = require('./signUpScreen.jsx');
 var customButton = require('./components/customButton.jsx')
+var customLink = require('./components/customLink.jsx')
 
 module.exports = class MainApp extends React.Component {
     constructor(props){
         super(props)
         this.state = {
             signIn: this.props.signIn,
-            signUp: this.props.signUp,
             renderForm: this.props.renderForm
         }
+        this.handleSignUpLinkClick = this.handleSignUpLinkClick.bind(this);
+        this.handleSignInLinkClick = this.handleSignInLinkClick.bind(this);
     }
 
-    handleSignInButtonClick() {
-        this.setState({signIn: true, signUp:false});
+    handleSignInLinkClick() {
+        this.setState({signIn: true});
     }
-    handleSignUpButtonClick() {
-        this.setState({signIn: false, signUp:true});
+    handleSignUpLinkClick() {
+        this.setState({signIn: false});
     }
 
     render() {
@@ -26,17 +28,21 @@ module.exports = class MainApp extends React.Component {
         
         if(this.state.renderForm)
         {
-            var signInButton = React.createElement(customButton, {buttonText:"SIGN IN", action:"/signin"});
-            var signUpButton = React.createElement(customButton, {buttonText:"SIGN UP", action:"/signup"});
+            var customFormButton = React.createElement(customButton, 
+            {
+                buttonText: this.state.signIn ?  'SIGN IN':'CREATE AN ACCOUNT', 
+                handleClick: null
+            });
+            var customFormLink = React.createElement(customLink, 
+            {
+                description: this.state.signIn ? 'Need an account? ' : 'Already have an account ? ',
+                title:this.state.signIn ? 'Sign up' : 'Sign in',
+                handeClick: this.state.signIn ? this.handleSignUpLinkClick : this.handleSignInLinkClick
+            })
 
-            if(this.state.signIn)
-            {
-                baseComponent = React.createElement(SignInScreen, null, signInButton, signUpButton);
-            }
-            if(this.state.signUp)
-            {
-                baseComponent = React.createElement(SignInScreen, null, signUpButton, signInButton);
-            }
+            var signInForm = React.createElement(SignInScreen, null, customFormButton, customFormLink);
+            var signUpForm = React.createElement(SignUpScreen, null, customFormLink);
+            baseComponent = this.state.signIn ? signInForm : signUpForm;
         }
         
         return (

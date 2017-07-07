@@ -290,7 +290,7 @@ table td {
   position: relative;
   width: 100%;
   min-height: 70px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 @media only screen and (min-width : 0px) and (max-width : 870px) {
   .input_group {
@@ -364,6 +364,9 @@ table td {
 }
 .input_group.input_unfocused.input_hasValue.input_valid label.input_label {
   color: #b1b0b1;
+}
+.input_group input:disabled {
+  background: #dddddd;
 }
 .input_group input.input {
   display: block;
@@ -1159,7 +1162,7 @@ table td {
   display: block;
   position: relative;
   width: 100%;
-  margin: 20px 0 0 0;
+  margin: 5px 0 5px 0;
   height: 50px;
   font-size: 13px;
 }

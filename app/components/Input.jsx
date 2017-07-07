@@ -21,7 +21,8 @@ module.exports = class Input extends React.Component {
     this.mouseEnterError = this.mouseEnterError.bind(this);
     this.hideError = this.hideError.bind(this);
     this.isValid = this.isValid.bind(this);
-
+    this.setValidity = this.setValidity.bind(this);
+    
     this.state = {
       valid: valid,
       empty: _.isEmpty(this.props.value),
@@ -71,6 +72,8 @@ module.exports = class Input extends React.Component {
 
   validateInput(value) {
     // trigger custom validation method in the parent component
+      console.log(value);
+    
     if(this.props.validate && this.props.validate(value)){
       this.setState({
         valid: true,
@@ -111,6 +114,12 @@ module.exports = class Input extends React.Component {
     }
    
     return this.state.valid;
+  }
+  setValidity(validity) {
+    this.setState({
+      valid: validity,
+      errorVisible: !validity
+    });
   }
 
   handleFocus() {
@@ -192,7 +201,7 @@ module.exports = class Input extends React.Component {
       'input_focused':   this.state.focus,
       'input_unfocused': !this.state.focus
     });
-
+    var disabled = this.state.disabled ? "disabled='disabled'" : '';
     var validator;
 
     if(this.state.validator) {
